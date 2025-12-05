@@ -1,0 +1,45 @@
+{
+  "name": "health-vault-backend",
+  "version": "1.0.0",
+  "description": "My Health Vault API - Express + MongoDB (JavaScript)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"No tests yet\" && exit 0",
+    "migrate": "node src/scripts/migrate-to-v2.js",
+    "verify": "node src/scripts/verify.js"
+  },
+  "keywords": [
+    "healthcare",
+    "api",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1540.0",
+    "axios": "^1.13.2",
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.3.1",
+    "fs": "^0.0.1-security",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "lucide-react": "^0.555.0",
+    "mongoose": "^8.1.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^2.7.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
