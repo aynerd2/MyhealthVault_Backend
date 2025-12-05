@@ -52,9 +52,10 @@ app.use(helmet({
 
 // 2. CORS - Allows frontend to make requests
 const allowedOrigins = [
-  'http://localhost:3000', // Local development
-  'http://Vaultmyhealth.com',
-  'https://www.Vaultmyhealth.com',
+   'http://localhost:3000',
+  'https://vaultmyhealth.com',
+  'https://www.vaultmyhealth.com',
+  'https://myhealthvault-frontend.vercel.app',
   process.env.FRONTEND_URL, // Production frontend
 ].filter(Boolean); // Remove undefined values
 
