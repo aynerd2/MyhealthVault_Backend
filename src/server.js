@@ -91,6 +91,12 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(logFormat));
 }
 
+
+app.use('/uploads', express.static('uploads'));
+
+
+
+
 // ==================== RATE LIMITING ====================
 // Prevents abuse by limiting how many requests per IP
 
