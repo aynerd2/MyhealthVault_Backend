@@ -341,9 +341,27 @@ router.post('/:orderId/upload-result',
         return res.status(404).json({ message: 'Test order not found' });
       }
 
+      // ✅ FIX: Handle both populated and non-populated departmentId
+      const orderDeptId = testOrder.departmentId.toString();
+      const userDeptId = typeof req.user.departmentId === 'object' 
+        ? req.user.departmentId._id.toString()  // If populated
+        : req.user.departmentId.toString();      // If just ID
+
+      console.log('🔍 Department Check:', {
+        orderDepartmentId: orderDeptId,
+        userDepartmentId: userDeptId,
+        matches: orderDeptId === userDeptId
+      });
+
       // Verify user has access (same department)
-      if (testOrder.departmentId.toString() !== req.user.departmentId.toString()) {
-        return res.status(403).json({ message: 'Access denied. Different department.' });
+      if (orderDeptId !== userDeptId) {
+        return res.status(403).json({ 
+          message: 'Access denied. Different department.',
+          debug: {
+            orderDepartment: orderDeptId,
+            yourDepartment: userDeptId
+          }
+        });
       }
 
       // Check if payment is confirmed using the model's virtual
@@ -356,7 +374,7 @@ router.post('/:orderId/upload-result',
       // Get file extension
       const fileExt = path.extname(req.file.originalname).toLowerCase();
 
-      // Use the model's instance method ✅
+      // Use the model's instance method
       const resultData = {
         fileUrl: `/uploads/test-results/${req.file.filename}`,
         fileType: fileExt.replace('.', ''),
@@ -386,9 +404,6 @@ router.post('/:orderId/upload-result',
     }
   }
 );
-
-
-
 
 
 

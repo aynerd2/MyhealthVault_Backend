@@ -60,6 +60,17 @@ router.post('/login',
   authController.login
 );
 
+
+router.get('/debug-token', authenticate, async (req, res) => {
+  res.json({
+    user: req.user,
+    token_role: req.user.role,
+    token_id: req.user._id,
+  });
+});
+
+
+
 /**
  * @route   POST /api/auth/refresh
  * @desc    Refresh access token

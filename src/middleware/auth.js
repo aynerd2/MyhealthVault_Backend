@@ -79,8 +79,22 @@ const authenticate = async (req, res, next) => {
       console.log('✅ Hospital checks passed');
     }
 
+
+     console.log('🔐 Authenticated User:', {
+      id: user._id,
+      email: user.email,
+      role: user.role,
+      departmentId: user.departmentId,
+      hospitalId: user.hospitalId
+    });
+
     req.user = user;
-    req.userId = decoded.userId;
+    req.userId = user._id;
+    req.userRole = user.role;
+    // req.hospitalId = user.hospitalId;
+
+    // req.user = user;
+    // req.userId = decoded.userId;
     req.hospitalId = user.hospitalId?._id;
     req.departmentId = user.departmentId?._id;
     
@@ -305,26 +319,31 @@ const optionalAuth = async (req, res, next) => {
 /**
  * Require specific role(s)
  */
-const requireRole = (...roles) => {
+const requireRole = (allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
-      return res.status(401).json({
-        error: 'Unauthorized',
-        message: 'Authentication required'
-      });
+      return res.status(401).json({ message: 'Authentication required' });
     }
 
+    // Convert to array if single role provided
+    const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+
+    console.log('🔍 Role Check:', {
+      userRole: req.user.role,
+      allowedRoles: roles,
+      matches: roles.includes(req.user.role)
+    });
+
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({
-        error: 'Forbidden',
-        message: `Access denied. Required role: ${roles.join(' or ')}`
+      return res.status(403).json({ 
+        message: `Access denied. Required role: ${roles.join(' or ')}`,
+        yourRole: req.user.role // ✅ Added for debugging
       });
     }
 
     next();
   };
 };
-
 
 /**
  * Require patient role
